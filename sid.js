@@ -24,6 +24,39 @@ var context     = new webkitAudioContext(),
         }
     }
 
+    function RingNode() {
+        this.vb = 0.2;
+        this.vl = 0.4;
+        this.h  = 1;
+    }
+
+    RingNode.prototype.setCurve = function() {
+        var samples = 1024,
+            wsCurve = new Float32Array(samples),
+            value;
+
+            for (var i = 0; i < samples; i++) {
+                var v = Math.abs((i - samples / 2) / (samples / 2));
+                if (v <= vb) {
+                    value = 0;
+                } else if (this.vb < v && v <= this.vl) {
+                    value = this.h * ((Math.pow(v - this.vb, 2)) / (2 * this.vl - 2 * this.vb));
+                } else {
+                    value = this.h * v - this.h * this.vl + 
+                        (this.h * ((Math.pow(this.vl - this.vb, 2)) /
+                            (2 * this.vl - 2 * this.vb)));
+                }
+
+                wsCurve[i] = value;
+            }
+
+            this.curve = wsCurve;
+    };
+
+    function RingNodeFactory(context) {
+        var ws = context.createWaveShaper();
+    }
+
     function EnvelopeNode(a, d, s, r) {
         this.gain.value = 0;
         this.att        = a;
