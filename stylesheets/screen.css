@@ -301,52 +301,75 @@ table {
   border-spacing: 0;
 }
 
-/* line 18, ../sass/screen.scss */
+/* line 20, ../sass/screen.scss */
+#keys .keys-black .synth-block:nth-child(5n+1), #keys .keys-black .synth-block:nth-child(5n+4), #keys .keys-black .synth-block:nth-child(5n+3), #keys .keys-black .synth-block:nth-child(5n) {
+  width: 100px;
+}
+
+/* line 24, ../sass/screen.scss */
 body {
   font-family: "Lato", "Helvetica", "Arial", sans-serif;
   background-color: #e7e9f1;
   color: #040404;
 }
 
-/* line 24, ../sass/screen.scss */
+/* line 30, ../sass/screen.scss */
 #synth-container {
   background: #040404;
 }
 
-/* line 28, ../sass/screen.scss */
+/* line 34, ../sass/screen.scss */
 .synth-block {
   background: #e7e9f1;
   display: block;
   float: left;
   padding: 8px;
   margin: 1px;
+  box-sizing: border-box;
+  border-radius: 5px;
   -webkit-box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.3);
   -moz-box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.3);
   box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.3);
 }
+/* line 44, ../sass/screen.scss */
+.synth-block input, .synth-block button {
+  padding: 0;
+  margin: 0;
+}
 
-/* line 37, ../sass/screen.scss */
-.synth-button {
-  -webkit-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.5), 0px -6px 30px 0px #ededed, inset 0 0px 10px rgba(4, 4, 4, 0.1);
-  -moz-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.5), 0px -6px 30px 0px #ededed, inset 0 0px 10px rgba(4, 4, 4, 0.1);
-  box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.5), 0px -6px 30px 0px #ededed, inset 0 0px 10px rgba(4, 4, 4, 0.1);
+/* line 50, ../sass/screen.scss */
+.synth-control {
+  -webkit-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 10px rgba(4, 4, 4, 0.2), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
+  -moz-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 10px rgba(4, 4, 4, 0.2), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 10px rgba(4, 4, 4, 0.2), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
   border-radius: 50%;
   width: 50px;
   height: 50px;
   border: none;
 }
 
-/* line 49, ../sass/screen.scss */
+/* line 63, ../sass/screen.scss */
 .row {
   overflow: hidden;
   *zoom: 1;
 }
 
-/* line 58, ../sass/screen.scss */
+/* line 69, ../sass/screen.scss */
+#keys .keys-black .synth-block:nth-child(5n+1), #keys .keys-black .synth-block:nth-child(5n+4) {
+  text-align: right;
+}
+/* line 74, ../sass/screen.scss */
+#keys .keys-black .synth-block:nth-child(5n+3), #keys .keys-black .synth-block:nth-child(5n) {
+  text-align: left;
+}
+/* line 80, ../sass/screen.scss */
 #keys .keys-black .synth-key {
   background-color: #040404;
+  border: #e7e9f1 3px solid;
 }
-/* line 62, ../sass/screen.scss */
+/* line 85, ../sass/screen.scss */
 #keys .keys-white .synth-key {
   background-color: #e7e9f1;
+  height: 100px;
+  border-radius: 30px;
 }
