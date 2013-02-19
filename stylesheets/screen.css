@@ -301,24 +301,43 @@ table {
   border-spacing: 0;
 }
 
-/* line 20, ../sass/screen.scss */
+/* line 21, ../sass/screen.scss */
+::selection {
+  background-color: rgba(207, 68, 18, 0.2);
+}
+
+/* line 25, ../sass/screen.scss */
+::-moz-selection {
+  background-color: rgba(207, 68, 18, 0.2);
+}
+
+/* line 29, ../sass/screen.scss */
 #keys .keys-black .synth-block:nth-child(5n+1), #keys .keys-black .synth-block:nth-child(5n+4), #keys .keys-black .synth-block:nth-child(5n+3), #keys .keys-black .synth-block:nth-child(5n) {
   width: 100px;
 }
 
-/* line 24, ../sass/screen.scss */
+/* line 33, ../sass/screen.scss */
 body {
   font-family: "Lato", "Helvetica", "Arial", sans-serif;
   background-color: #e7e9f1;
   color: #040404;
 }
 
-/* line 30, ../sass/screen.scss */
+/* line 39, ../sass/screen.scss */
 #synth-container {
-  background: #040404;
+  overflow: hidden;
+  *zoom: 1;
+  background: #e7e9f1;
+  width: 952px;
+  padding: 15px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 20px -5px rgba(4, 4, 4, 0.15), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
+  -moz-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 20px -5px rgba(4, 4, 4, 0.15), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 20px -5px rgba(4, 4, 4, 0.15), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
+  margin: 50px auto 0;
 }
 
-/* line 34, ../sass/screen.scss */
+/* line 54, ../sass/screen.scss */
 .synth-block {
   background: #e7e9f1;
   display: block;
@@ -327,49 +346,91 @@ body {
   margin: 1px;
   box-sizing: border-box;
   border-radius: 5px;
-  -webkit-box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.3);
-  -moz-box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.3);
-  box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.3);
+  -webkit-box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.2);
+  -moz-box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.2);
+  box-shadow: inset 0 0 20px rgba(4, 4, 4, 0.2);
 }
-/* line 44, ../sass/screen.scss */
+/* line 64, ../sass/screen.scss */
 .synth-block input, .synth-block button {
   padding: 0;
   margin: 0;
 }
 
-/* line 50, ../sass/screen.scss */
+/* line 70, ../sass/screen.scss */
 .synth-control {
-  -webkit-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 10px rgba(4, 4, 4, 0.2), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
-  -moz-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 10px rgba(4, 4, 4, 0.2), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
-  box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px #ededed, inset 0 3px 10px rgba(4, 4, 4, 0.2), inset 0 -3px 1px rgba(255, 255, 255, 0.4);
+  position: relative;
+  -webkit-transition: cubic-bezier(0.23, 1, 0.32, 1) 0.2s all;
+  -moz-transition: cubic-bezier(0.23, 1, 0.32, 1) 0.2s all;
+  -o-transition: cubic-bezier(0.23, 1, 0.32, 1) 0.2s all;
+  transition: cubic-bezier(0.23, 1, 0.32, 1) 0.2s all;
+  -webkit-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -8px 20px -10px rgba(4, 4, 4, 0.2), 0px -6px 30px 0px rgba(255, 255, 255, 0.9), inset 0 0 2px rgba(4, 4, 4, 0.3), inset 2px 3px 10px rgba(4, 4, 4, 0.15), inset 0 -3px 2px -1px rgba(255, 255, 255, 0.6);
+  -moz-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -8px 20px -10px rgba(4, 4, 4, 0.2), 0px -6px 30px 0px rgba(255, 255, 255, 0.9), inset 0 0 2px rgba(4, 4, 4, 0.3), inset 2px 3px 10px rgba(4, 4, 4, 0.15), inset 0 -3px 2px -1px rgba(255, 255, 255, 0.6);
+  box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -8px 20px -10px rgba(4, 4, 4, 0.2), 0px -6px 30px 0px rgba(255, 255, 255, 0.9), inset 0 0 2px rgba(4, 4, 4, 0.3), inset 2px 3px 10px rgba(4, 4, 4, 0.15), inset 0 -3px 2px -1px rgba(255, 255, 255, 0.6);
+  font-size: 42px;
+  line-height: 50px;
   border-radius: 50%;
   width: 50px;
   height: 50px;
   border: none;
+  background: #e7e9f1;
+}
+/* line 89, ../sass/screen.scss */
+.synth-control:active {
+  -webkit-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -8px 20px -10px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px white, inset 0 0 1px rgba(4, 4, 4, 0.3), inset 0 3px 5px rgba(255, 255, 255, 0.5), inset 0 -2px 1px rgba(4, 4, 4, 0.3);
+  -moz-box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -8px 20px -10px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px white, inset 0 0 1px rgba(4, 4, 4, 0.3), inset 0 3px 5px rgba(255, 255, 255, 0.5), inset 0 -2px 1px rgba(4, 4, 4, 0.3);
+  box-shadow: 0px 8px 20px -5px rgba(4, 4, 4, 0.6), 0px -8px 20px -10px rgba(4, 4, 4, 0.6), 0px -6px 30px 0px white, inset 0 0 1px rgba(4, 4, 4, 0.3), inset 0 3px 5px rgba(255, 255, 255, 0.5), inset 0 -2px 1px rgba(4, 4, 4, 0.3);
+}
+/* line 98, ../sass/screen.scss */
+.synth-control:active .label {
+  font-size: 39px;
+  color: #313133;
 }
 
-/* line 63, ../sass/screen.scss */
+/* line 105, ../sass/screen.scss */
+.label {
+  -webkit-transition: linear 0.2s all;
+  -moz-transition: linear 0.2s all;
+  -o-transition: linear 0.2s all;
+  transition: linear 0.2s all;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  font-size: 42px;
+  line-height: 40px;
+}
+
+/* line 117, ../sass/screen.scss */
+.hidden-field {
+  display: none;
+  width: 0px;
+  visibility: hidden;
+}
+
+/* line 123, ../sass/screen.scss */
 .row {
   overflow: hidden;
   *zoom: 1;
+  background: #040404;
 }
 
-/* line 69, ../sass/screen.scss */
+/* line 130, ../sass/screen.scss */
 #keys .keys-black .synth-block:nth-child(5n+1), #keys .keys-black .synth-block:nth-child(5n+4) {
   text-align: right;
 }
-/* line 74, ../sass/screen.scss */
+/* line 135, ../sass/screen.scss */
 #keys .keys-black .synth-block:nth-child(5n+3), #keys .keys-black .synth-block:nth-child(5n) {
   text-align: left;
 }
-/* line 80, ../sass/screen.scss */
+/* line 141, ../sass/screen.scss */
 #keys .keys-black .synth-key {
   background-color: #040404;
   border: #e7e9f1 3px solid;
 }
-/* line 85, ../sass/screen.scss */
+/* line 146, ../sass/screen.scss */
 #keys .keys-white .synth-key {
-  background-color: #e7e9f1;
   height: 100px;
   border-radius: 30px;
 }

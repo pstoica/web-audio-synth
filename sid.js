@@ -4,7 +4,7 @@
     var context     = new webkitAudioContext(),
         master      = context.createGainNode(),
         preGain     = context.createGainNode(),
-        genCount    = 1,
+        genCount    = 3,
         filters     = [],
         voices      = [],
         keys        = [],
@@ -54,6 +54,7 @@
             voices[note] = new Voice(note);
         }
 
+        console.log('hi');
         voices[note].noteOn();
     }
 
@@ -248,7 +249,7 @@
     window.onload = init;
 
     $(document).ready(function() {
-        $('.key').mousedown(function(e) {
+        $('.synth-key').mousedown(function(e) {
             noteOn($(this).data('note'));
         }).mouseup(function(e) {
             noteOff($(this).data('note'));
