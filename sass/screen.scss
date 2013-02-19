@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+@import url(http://fonts.googleapis.com/css?family=Lato:700);
+@import "normalize";
+@import "compass/css3/transition";
+@import "compass/css3";
+@import "compass/utilities/general/clearfix";
+
+
+
+$black:  #040404;
+$grey:   mix(#e2e4ee, #fff, 80%);
+$blue:   #4ba8ee;
+$green:  #59cf52;
+$white:  #ededed;
+$orange: #cf4412;
+
+body {
+	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
+	background-color: $grey;
+	color: $black;
+}
+
+#synth-container {
+	background: $black;
+}
+
+.synth-block {
+	background: $grey;
+	display: block;
+	float: left;
+	padding: 8px;
+	margin: 1px;
+	@include box-shadow(inset 0 0 20px rgba($black, 0.3));
+}
+
+.synth-button {
+	@include box-shadow(
+			0px 8px 20px -5px rgba($black, 0.5),
+			0px -6px 30px 0px $white,
+			inset 0 0px 10px rgba($black, 0.1)
+		);
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	border: none;
+}
+
+.row {
+	@include clearfix;
+}
+
+#keys {
+	.synth-key {
+
+	}
+
+	.keys-black .synth-key {
+		background-color: $black;
+	}
+
+	.keys-white .synth-key {
+		background-color: $grey;
+	}
+}

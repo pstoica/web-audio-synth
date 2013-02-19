@@ -4,7 +4,7 @@
     var context     = new webkitAudioContext(),
         master      = context.createGainNode(),
         preGain     = context.createGainNode(),
-        genCount    = 3,
+        genCount    = 1,
         filters     = [],
         voices      = [],
         keys        = [],
@@ -17,13 +17,18 @@
         NOISE = 2;
 
     function init() {
+        console.log(voices[3]);
         for (var i = 0; i < genCount; i++) {
-            generators.add(new SoundGen());
+            generators.push(new SoundGen());
         }
 
         for (var t = 0; t < 3; t++) {
-            filters.add(new Filter(t));
+            filters.push(new Filter(t));
         }
+
+        updateRoutes();
+        master.gain.value = 1/16;
+        master.connect(context.destination);
     }
 
     /* helper functions */
@@ -45,16 +50,16 @@
     }
 
     function noteOn(note) {
-        if (voices[note] === null) {
+        if (voices[note] === undefined) {
             voices[note] = new Voice(note);
         }
 
-        voices[note].trigger();
+        voices[note].noteOn();
     }
 
     function noteOff(note) {
-        if (voices[note] !== null) {
-            voices[note].release();
+        if (voices[note] !== undefined) {
+            voices[note].noteOff();
         }
     }
 
@@ -85,7 +90,7 @@
 
     function Filter(type) {
         var filter  = context.createBiquadFilter();
-        filter.on   = true;
+        filter.on   = false;
         filter.type = type;
 
         return filter;
@@ -93,35 +98,16 @@
 
     /* wraps gainNode with envelope functionality */
     function EnvelopeNode(a, d, s, r) {
-        var gainNode = context.createGainNode();
-        gainNode.gain.value = 0;
-        gainNode.att = a;
-        gainNode.dec = d;
-        gainNode.sus = s;
-        gainNode.rel = r;
+        var self = this;
 
-        gainNode.trigger = function() {
-            var now = gainNode.context.currentTime,
-                gain = gainNode.gain;
+        self.gainNode = context.createGainNode();
+        self.gainNode.gain.value = 0;
+        self.att = a;
+        self.dec = d;
+        self.sus = s;
+        self.rel = r;
 
-            gain.cancelScheduledValues(now);
-            gain.setValueAtTime(0, now);
-            gain.linearRampToValueAtTime(1.0, now + gainNode.att);
-            
-            now += gainNode.att;
-            gain.linearRampToValueAtTime(gainNode.sus, now + gainNode.dec);
-        };
-
-        gainNode.release = function() {
-            var now = gainNode.context.currentTime,
-                gain = gainNode.gain;
-
-            gain.cancelScheduledValues(now);
-            gain.setValueAtTime(gain.value, now);
-            gain.linearRampToValueAtTime(0, now + gainNode.rel);
-        };
-
-        return gainNode;
+        return self;
     }
 
     EnvelopeNode.prototype.setFromGenerator = function(generator) {
@@ -133,8 +119,31 @@
         self.rel = generator.rel;
     };
 
+    EnvelopeNode.prototype.trigger = function() {
+        var self = this,
+            now  = self.gainNode.context.currentTime,
+            gain = self.gainNode.gain;
+
+        gain.cancelScheduledValues(now);
+        gain.setValueAtTime(0, now);
+        gain.linearRampToValueAtTime(1.0, now + self.att);
+        
+        now += self.att;
+        gain.linearRampToValueAtTime(self.sus, now + self.dec);
+    };
+
+    EnvelopeNode.prototype.release = function() {
+        var self = this,
+            now  = self.gainNode.context.currentTime,
+            gain = self.gainNode.gain;
+
+        gain.cancelScheduledValues(now);
+        gain.setValueAtTime(gain.value, now);
+        gain.linearRampToValueAtTime(0, now + self.rel);
+    };
+
     function SoundGen() {
-        var self            = this;
+        var self = this;
 
         self.type           = 1;
         self.ringModulation = false;
@@ -146,12 +155,14 @@
         self.rel            = 3;
     }
 
-    SoundGen.prototype.createGenerator = function() {
+    SoundGen.prototype.createGenerator = function(frequency) {
         var self = this;
 
         if (self.type >= 0 && self.type <= 3) {
             var oscillator = context.createOscillator();
-            oscillator.type = self.type;
+            
+            oscillator.type            = self.type;
+            oscillator.frequency.value = frequency;
             oscillator.noteOn(0);
             return oscillator;
         } else if (self.ringModulation) {
@@ -195,11 +206,10 @@
         for (var i = 0; i < genCount; i++) {
             self.envelopes[i].setFromGenerator(generators[i]);
 
-            self.oscillators[i]           = generators[i].createGenerator();
-            self.oscillators[i].frequency = self.frequency;
+            self.oscillators[i] = generators[i].createGenerator(self.frequency);
 
-            self.oscillators[i].connect(self.envelopes[i]);
-            self.envelopes[i].connect(master);
+            self.oscillators[i].connect(self.envelopes[i].gainNode);
+            self.envelopes[i].gainNode.connect(preGain);
         }
     };
 
@@ -208,7 +218,7 @@
 
         self.envelopes.forEach(function(element) {
             element.trigger();
-        });        
+        });
     };
 
     Voice.prototype.noteOff = function() {
@@ -238,6 +248,10 @@
     window.onload = init;
 
     $(document).ready(function() {
-
+        $('.key').mousedown(function(e) {
+            noteOn($(this).data('note'));
+        }).mouseup(function(e) {
+            noteOff($(this).data('note'));
+        });
     });
 }(jQuery));
