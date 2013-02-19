@@ -17,7 +17,6 @@
         NOISE = 2;
 
     function init() {
-        console.log(voices[3]);
         for (var i = 0; i < genCount; i++) {
             generators.push(new SoundGen());
         }

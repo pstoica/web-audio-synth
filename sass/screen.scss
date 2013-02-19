@@ -7,11 +7,13 @@
 @import "compass/utilities/general/clearfix";
 
 $black:  #040404;
-$grey:   mix(#e2e4ee, #fff, 80%);
+//$grey:   mix(#e2e4ee, #fff, 80%);
+$grey:   #d5d5e0;
 $blue:   #4ba8ee;
 $green:  #59cf52;
-$white:  #ededed;
+$white:  #e3e6f2;
 $orange: #cf4412;
+$bright: #fbf9fd;
 
 $key-size: 50px;
 $knob-size: 80px;
@@ -32,22 +34,21 @@ $key-margin: 1px;
 
 body {
 	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
-	background-color: $grey;
+	background-color: $black;
 	color: $black;
 }
 
 #synth-container {
-	@include clearfix;
 	background: $grey;
 	width: 952px;
 	padding: 15px;
 	border-radius: 10px;
-	@include box-shadow(
-			0px 8px 20px -5px rgba($black, 0.6),
-			0px -6px 30px 0px $white,
+	/*@include box-shadow(
+			0px 8px 20px -5px rgba($grey, 0.4),
 			inset 0 3px 20px -5px rgba($black, 0.15),
-			inset 0 -3px 1px rgba(#fff, 0.4)
-		);
+			inset 0 -3px 1px rgba($bright, 0.4)
+		);*/
+	-webkit-box-reflect: below 3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(80%, transparent), to(rgba(black, 0.25)));
 	margin: 50px auto 0;
 }
 
@@ -67,19 +68,22 @@ body {
 	}
 }
 
+.synth-group {
+	@include clearfix;
+	float: left;
+}
+
 .synth-control {
+	display: block;
 	position: relative;
 	@include transition(cubic-bezier(0.230, 1.000, 0.320, 1.000) 0.2s all);
 	@include box-shadow(
-			0px 8px 20px -5px rgba($black, 0.6),
-			0px -8px 20px -10px rgba($black, 0.2),
-			0px -6px 30px 0px rgba(#fff, 0.9),
-			inset 0 0 2px rgba($black, 0.3),
-			inset 2px 3px 10px rgba($black, 0.15),
-			inset 0 -3px 2px -1px rgba(#fff, 0.6)
-		);
-	font-size: 42px;
-	line-height: $key-size;
+		0px 8px 20px -5px rgba($black, 0.6),
+		0px -8px 20px -10px rgba($black, 0.6),
+		0px -6px 30px 0px $bright,
+		inset 0 0 1px rgba($black, 0.3),
+		inset 0 3px 5px rgba($bright, 0.5),
+		inset 0 -2px 1px rgba($black, 0.3));
 	border-radius: 50%;
 	width: $key-size;
 	height: $key-size;
@@ -88,18 +92,51 @@ body {
 
 	&:active {
 		@include box-shadow(
-				0px 8px 20px -5px rgba($black, 0.6),
-				0px -8px 20px -10px rgba($black, 0.6),
-				0px -6px 30px 0px #fff,
-				inset 0 0 1px rgba($black, 0.3),
-				inset 0 3px 5px rgba(#fff, 0.5),
-				inset 0 -2px 1px rgba($black, 0.3)
-			);
+			0px 8px 20px -5px rgba($black, 0.6),
+			0px -8px 20px -10px rgba($black, 0.2),
+			0px -6px 30px 0px rgba($bright, 0.9),
+			inset 0 0 2px rgba($black, 0.3),
+			inset 2px 3px 10px rgba($black, 0.15),
+			inset 0 -3px 2px -1px rgba($bright, 0.6)
+		);
 		.label {
-			font-size: 39px;
-			color: mix($black, $grey, 80%);
+			color: mix($black, $grey, 25%);
 		}
 	}
+
+	&.blue {
+		background-color: $blue;
+	}
+
+	&.green {
+		background-color: $green;
+	}
+
+	&.orange {
+		background-color: $orange;
+		
+	}
+
+	&.blue, &.green, &.orange {
+		.label {
+			color: $grey;
+		}
+
+		&:active .label {
+			color: mix($grey, $white, 60%);
+		}
+	}
+
+	color: mix($black, $grey, 30%);
+}
+
+.synth-group-label {
+	display: inline-block;
+	line-height: $key-size;
+	text-align: center;
+	font-size: 24px;
+	width: $key-size;
+	height: $key-size;
 }
 
 .label {
@@ -110,8 +147,9 @@ body {
 	bottom: 0;
 	left: 0;
 	text-align: center;
-	font-size: 42px;
-	line-height: 40px;
+	font-size: 32px;
+	line-height: 44px;
+	
 }
 
 .hidden-field {
@@ -122,6 +160,7 @@ body {
 
 .row {
 	@include clearfix;
+	clear: both;
 	background: $black;
 }
 
@@ -129,12 +168,13 @@ body {
 	.keys-black .synth-block {
 		&:nth-child(5n+1), &:nth-child(5n+4) {
 			@extend %large;
-			text-align: right;
+			.synth-control {
+				float: right;
+			}
 		}
 
 		&:nth-child(5n+3), &:nth-child(5n) {
 			@extend %large;
-			text-align: left;
 		}
 	}
 
