@@ -3,34 +3,30 @@
 
     var context     = new webkitAudioContext(),
         master      = context.createGainNode(),
-        preGain     = context.createGainNode(),
         genCount    = 3,
-        filters     = [],
+        maxVoices   = 16,
+        filter      = context.createBiquadFilter(),
         voices      = [],
         keys        = [],
-        generators  = [],
-        monophonic  = false;
+        generators  = [];
 
     /* enumerable for oscillator modes */
-    var OSC   = 0,
-        RING  = 1,
-        NOISE = 2;
+    var SQUARE   = 1,
+        SAWTOOTH = 2,
+        TRIANGLE = 3,
+        NOISE    = 4;
 
     function init() {
         for (var i = 0; i < genCount; i++) {
             generators.push(new SoundGen());
         }
 
-        for (var t = 0; t < 3; t++) {
-            filters.push(new Filter(t));
-        }
-
-        updateRoutes();
-        master.gain.value = 1/16;
+        filter.connect(master);
+        master.gain.value = 0.25;
         master.connect(context.destination);
     }
 
-    /* helper functions */
+    /* maths functions */
     function triangle(t) {
         return Math.abs(2 * (t / Math.PI - Math.floor((t / Math.PI) + (1 / 2))));
     }
@@ -53,7 +49,6 @@
             voices[note] = new Voice(note);
         }
 
-        console.log('hi');
         voices[note].noteOn();
     }
 
@@ -63,37 +58,10 @@
         }
     }
 
-    function updateRoutes() {
-        var lastOn = -1;
-
-        preGain.disconnect();
-        filters.forEach(function(filter, i) {
-            filter.disconnect();
-
-            if (filter.on) {
-                if (lastOn === -1) {
-                    preGain.connect(filter);
-                } else {
-                    filters[lastOn].connect(filter);
-                }
-
-                lastOn = i;
-            }
+    function regenerate() {
+        voices.forEach(function(voice) {
+            voice.generate();
         });
-
-        if (lastOn === -1) {
-            preGain.connect(master);
-        } else {
-            filters[lastOn].connect(master);
-        }
-    }
-
-    function Filter(type) {
-        var filter  = context.createBiquadFilter();
-        filter.on   = false;
-        filter.type = type;
-
-        return filter;
     }
 
     /* wraps gainNode with envelope functionality */
@@ -145,29 +113,28 @@
     function SoundGen() {
         var self = this;
 
-        self.type           = 1;
-        self.ringModulation = false;
-        self.noise          = false;
-        self.mode           = OSC;
-        self.att            = 0;
-        self.sus            = 1;
-        self.dec            = 1;
-        self.rel            = 3;
+        self.type   = SQUARE;
+        self.ring   = false;
+        self.att    = 0;
+        self.sus    = 1;
+        self.dec    = 1;
+        self.rel    = 3;
+        self.active = true;
     }
 
     SoundGen.prototype.createGenerator = function(frequency) {
         var self = this;
 
-        if (self.type >= 0 && self.type <= 3) {
+        if (self.ring) {
+            return new RingGen();
+        } else if (self.type >= 0 && self.type <= 3) {
             var oscillator = context.createOscillator();
             
             oscillator.type            = self.type;
             oscillator.frequency.value = frequency;
             oscillator.noteOn(0);
             return oscillator;
-        } else if (self.ringModulation) {
-            return new NoiseGen();
-        }  else if (self.noise) {
+        } else if (self.type == NOISE) {
             return new NoiseGen();
         }
     };
@@ -206,10 +173,17 @@
         for (var i = 0; i < genCount; i++) {
             self.envelopes[i].setFromGenerator(generators[i]);
 
-            self.oscillators[i] = generators[i].createGenerator(self.frequency);
+            if (self.oscillators[i] !== undefined) {
+                self.oscillators[i].disconnect();
+            } else {
+                self.oscillators[i] = undefined;
+            }
 
-            self.oscillators[i].connect(self.envelopes[i].gainNode);
-            self.envelopes[i].gainNode.connect(preGain);
+            if (generators[i].active) {
+                self.oscillators[i] = generators[i].createGenerator(self.frequency);
+                self.oscillators[i].connect(self.envelopes[i].gainNode);
+                self.envelopes[i].gainNode.connect(filter);
+            }
         }
     };
 
@@ -229,16 +203,51 @@
         });
     };
 
-    function NoiseGen() {
-        var bufferSize = 1024;
+    function NoiseGen(frequency) {
+        var bufferSize = 1024,
+            noiseNode,
+            filter;
 
-        var node = context.createJavaScriptNode(bufferSize, 1, 1);
-        node.onaudioprocess = function(e) {
+        var noiseNode = context.createJavaScriptNode(bufferSize, 1, 1);
+        noiseNode.onaudioprocess = function(e) {
             var out = e.outputBuffer.getChannelData(0);
 
             for (var i = 0; i < bufferSize; i++) {
                 out[i] = Math.random() * 2 - 1;
             }
+        };
+
+        filter      = context.createBiquadFilter();
+        filter.on   = true;
+        filter.type = 2;
+
+        filter.frequency.value = frequency;
+        filter.Q.value         = 100;
+
+        noiseNode.connect(filter);
+
+        return filter;
+    }
+
+    function RingGen(frequency) {
+        var self = this,
+            bufferSize = 1024,
+            x = 0; // initial sample number
+
+        this.process = function(e) {
+            var out = e.outputBuffer.getChannelData(0);
+
+            for (var i = 0; i < bufferSize; i++) {
+                var f = this.x / (context.sample_rate / 2 * Math.PI * frequency);
+                out[i] = triangle(f) * square(f);
+            }
+
+            this.x++;
+        }
+
+        var node = context.createJavaScriptNode(bufferSize, 1, 1);
+        node.onaudioprocess = function(e) {
+            self.process(e);
         };
 
         return node;
@@ -248,10 +257,45 @@
     window.onload = init;
 
     $(document).ready(function() {
+
         $('.synth-key').mousedown(function(e) {
             noteOn($(this).data('note'));
         }).mouseup(function(e) {
             noteOff($(this).data('note'));
         });
+
+        $('.gen select').on('change', function() {
+            var $e = $(this);
+            generators[$e.data('gen')].type = $e.val();
+            regenerate();
+        });
+
+        $('.gen input[type="checkbox"]').on('change', function() {
+            var $e = $(this);
+            generators[$e.data('gen')][$e.data('field')] = this.checked;
+            regenerate();
+        });
+
+        $('[data-field="ring"]').on('change', function() {
+            var $e = $(this);
+            generators[$e.data('gen')].ring = this.checked;
+            regenerate();
+        });
+
+        $('.gen input[type="range"]').on('change', function() {
+            var $e = $(this);
+            generators[$e.data('gen')][$e.data('field')] = this.value;
+            regenerate();
+        });
+
+        $('.filter input[type="range"]').on('change', function() {
+            var $e = $(this);
+            filter[$e.data('field')].value = this.value;
+        });
+
+        $('.master input[type="range"]').on('change', function() {
+            var $e = $(this);
+            master[$e.data('field')].value = this.value;
+        });
     });
-}(jQuery));
+}(Zepto));

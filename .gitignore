@@ -1,16 +1,4 @@
 ###Compass###
  
 .sass-cache
-
-
-###Compass###
- 
-.sass-cache
-
-
-###SASS###
- 
-### SASS Ignores - "Sassy CSS" http://sass-lang.com/
-.sass-cache
-
-
+.DS_STORE

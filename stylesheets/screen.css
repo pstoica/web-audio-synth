@@ -303,12 +303,12 @@ table {
 
 /* line 23, ../sass/screen.scss */
 ::selection {
-  background-color: rgba(207, 68, 18, 0.2);
+  background-color: rgba(75, 168, 238, 0.2);
 }
 
 /* line 27, ../sass/screen.scss */
 ::-moz-selection {
-  background-color: rgba(207, 68, 18, 0.2);
+  background-color: rgba(75, 168, 238, 0.2);
 }
 
 /* line 31, ../sass/screen.scss */
@@ -320,7 +320,7 @@ table {
 body {
   font-family: "Lato", "Helvetica", "Arial", sans-serif;
   background-color: #040404;
-  color: #040404;
+  color: #e3e6f2;
 }
 
 /* line 41, ../sass/screen.scss */
@@ -330,11 +330,11 @@ body {
   padding: 15px;
   border-radius: 10px;
   /*@include box-shadow(
-  		0px 8px 20px -5px rgba($grey, 0.4),
-  		inset 0 3px 20px -5px rgba($black, 0.15),
-  		inset 0 -3px 1px rgba($bright, 0.4)
-  	);*/
-  -webkit-box-reflect: below 3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(80%, transparent), to(rgba(0, 0, 0, 0.25)));
+      0px 8px 20px -5px rgba($grey, 0.4),
+      inset 0 3px 20px -5px rgba($black, 0.15),
+      inset 0 -3px 1px rgba($bright, 0.4)
+    );*/
+  -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(80%, transparent), to(rgba(0, 0, 0, 0.25)));
   margin: 50px auto 0;
 }
 
@@ -467,4 +467,59 @@ body {
 #keys .keys-white .synth-key {
   height: 100px;
   border-radius: 30px;
+}
+
+/* line 192, ../sass/screen.scss */
+#controls-container {
+  width: 952px;
+  margin: 0 auto;
+}
+/* line 196, ../sass/screen.scss */
+#controls-container section {
+  width: 50%;
+  float: left;
+}
+
+/* line 202, ../sass/screen.scss */
+.control-group {
+  padding: 5px 0;
+}
+/* line 205, ../sass/screen.scss */
+.control-group label {
+  float: left;
+  width: 200px;
+}
+/* line 210, ../sass/screen.scss */
+.control-group .controls {
+  margin-left: 220px;
+}
+
+/* line 215, ../sass/screen.scss */
+input[type="range"] {
+  -webkit-appearance: none;
+  background-color: #e3e6f2;
+}
+
+/* line 220, ../sass/screen.scss */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #4ba8ee;
+  width: 15px;
+  height: 15px;
+}
+
+/* line 228, ../sass/screen.scss */
+input[type="range"][data-field="decay"]::-webkit-slider-thumb,
+input[type="range"][data-field="q"]::-webkit-slider-thumb {
+  background-color: #59cf52;
+}
+
+/* line 232, ../sass/screen.scss */
+input[type="range"][data-field="sustain"]::-webkit-slider-thumb {
+  background-color: #cf4412;
+}
+
+/* line 236, ../sass/screen.scss */
+input[type="range"][data-field="release"]::-webkit-slider-thumb {
+  background-color: #040404;
 }

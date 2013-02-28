@@ -3,84 +3,11 @@
 <head>
     <title>SID Synth in Web Audio</title>
     <link type="text/css" rel="stylesheet" href="stylesheets/screen.css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="sid.js"></script>
+    <script src="js/libs/zepto.js"></script>
+    <script src="js/sid.js"></script>
 </head>
 <body>
     <div id="synth-container">
-        <div class="row">
-            <div class="synth-group">
-                <div class="row">
-                    <input class="knob hidden-field" data-width="100" data-displayinput="false" value="0">
-                </div>
-                <div class="row">
-                    <div class="synth-block">
-                        <button class="synth-control">
-                            <span class="label">&laquo;</span>
-                        </button>
-                    </div>
-                    <div class="synth-block">
-                        <button class="synth-control">
-                            <span class="label">&raquo;</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="synth-block">
-                        <button class="synth-control">
-                            <span class="label">-</span>
-                        </button>
-                    </div>
-                    <div class="synth-block">
-                        <button class="synth-control">
-                            <span class="label">+</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="synth-screen" id="main-screen"></div>
-            <div class="synth-group">
-                <div class="row">
-                    <div class="synth-block">
-                        <span class="synth-group-label">OSC</span>
-                    </div>
-                    <div class="synth-block">
-                        <button class="synth-control blue">
-                            <span class="label">1</span>
-                        </button>
-                    </div>
-                    <div class="synth-block">
-                        <button class="synth-control green">
-                            <span class="label">2</span>
-                        </button>
-                    </div>
-                    <div class="synth-block">
-                        <button class="synth-control orange">
-                            <span class="label">3</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="synth-block">
-                        <span class="synth-group-label">FLT</span>
-                    </div>
-                    <div class="synth-block">
-                        <button class="synth-control blue">
-                            <span class="label">L</span>
-                        </button>
-                    </div>
-                    <div class="synth-block">
-                        <button class="synth-control green">
-                            <span class="label">H</span>
-                        </button>
-                    </div>
-                    <div class="synth-block">
-                        <button class="synth-control orange">
-                            <span class="label">B</span>
-                        </button>
-                    </div>
-                </div>
-        </div>
         <div id="keys" class="row">
             <div class="row keys-black">
                 <div class="synth-block">
@@ -90,7 +17,7 @@
                     <button data-note="63" class="synth-control synth-key"></button>
                 </div>
                 <div class="synth-block">
-                    <button data-note="66" class="synth-control synth-key"></button>
+                    <button data-note="65" class="synth-control synth-key"></button>
                 </div>
                 <div class="synth-block">
                     <button data-note="68" class="synth-control synth-key"></button>
@@ -105,7 +32,7 @@
                     <button data-note="75" class="synth-control synth-key"></button>
                 </div>
                 <div class="synth-block">
-                    <button data-note="78" class="synth-control synth-key"></button>
+                    <button data-note="77" class="synth-control synth-key"></button>
                 </div>
                 <div class="synth-block">
                     <button data-note="80" class="synth-control synth-key"></button>
@@ -125,7 +52,7 @@
                     <button data-note="64" class="synth-control synth-key"></button>
                 </div>
                 <div class="synth-block">
-                    <button data-note="65" class="synth-control synth-key"></button>
+                    <button data-note="66" class="synth-control synth-key"></button>
                 </div>
                 <div class="synth-block">
                     <button data-note="67" class="synth-control synth-key"></button>
@@ -146,7 +73,7 @@
                     <button data-note="76" class="synth-control synth-key"></button>
                 </div>
                 <div class="synth-block">
-                    <button data-note="77" class="synth-control synth-key"></button>
+                    <button data-note="78" class="synth-control synth-key"></button>
                 </div>
                 <div class="synth-block">
                     <button data-note="79" class="synth-control synth-key"></button>
@@ -158,6 +85,203 @@
                     <button data-note="83" class="synth-control synth-key"></button>
                 </div>
             </div>
+        </div>
+    </div>
+    <div id="controls-container">
+        <section class="gen">
+            <header>
+                <h2>Sound Generator 1</h2>
+            </header>
+            <div class="control-group">
+                <label>Type</label>
+                <div class="controls">
+                    <select data-gen="0" data-field="type">
+                        <option value="1">Square</option>
+                        <option value="2">Sawtooth</option>
+                        <option value="3">Triangle</option>
+                        <option value="4">Noise</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gen0-active">Active</label>
+                <div class="controls">
+                    <input type="checkbox" id="gen0-active" data-gen="0" data-field="active" checked="checked" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gen0-ring">Ring Modulation</label>
+                <div class="controls">
+                    <input type="checkbox" id="gen0-ring" data-gen="0" data-field="ring" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Attack</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="0" data-field="attack" value="0" min="0" max="10" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Decay</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="0" data-field="decay" value="1" min="0" max="10" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Sustain</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="0" data-field="sustain" value="1" min="0" max="1" value="1" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Release</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="0" data-field="release" value="3" min="0" max="10" />
+                </div>
+            </div>
+        </section>
+        <section class="gen">
+            <header>
+                <h2>Sound Generator 2</h2>
+            </header>
+            <div class="control-group">
+                <label>Type</label>
+                <div class="controls">
+                    <select data-gen="1" data-field="type">
+                        <option value="1">Square</option>
+                        <option value="2">Sawtooth</option>
+                        <option value="3">Triangle</option>
+                        <option value="4">Noise</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gen1-active">Active</label>
+                <div class="controls">
+                    <input type="checkbox" id="gen1-active" data-gen="1" data-field="active" checked="checked" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gen1-ring">Ring Modulation</label>
+                <div class="controls">
+                    <input type="checkbox" id="gen1-ring" data-gen="1" data-field="ring" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Attack</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="1" data-field="attack" value="0" min="0" max="10" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Decay</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="1" data-field="decay" value="1" min="0" max="10" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Sustain</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="1" data-field="sustain" value="1" min="0" max="1" value="1" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Release</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="1" data-field="release" value="3" min="0" max="10" />
+                </div>
+            </div>
+        </section>
+        <section class="gen">
+            <header>
+                <h2>Sound Generator 3</h2>
+            </header>
+            <div class="control-group">
+                <label>Type</label>
+                <div class="controls">
+                    <select data-gen="2" data-field="type">
+                        <option value="1">Square</option>
+                        <option value="2">Sawtooth</option>
+                        <option value="3">Triangle</option>
+                        <option value="4">Noise</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gen2-active">Active</label>
+                <div class="controls">
+                    <input type="checkbox" id="gen2-active" data-gen="2" data-field="active" checked="checked" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gen2-ring">Ring Modulation</label>
+                <div class="controls">
+                    <input type="checkbox" id="gen2-ring" data-gen="2" data-field="ring" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Attack</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="2" data-field="attack" value="0" min="0" max="10" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Decay</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="2" data-field="decay" value="1" min="0" max="10" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Sustain</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="2" data-field="sustain" value="1" min="0" max="1" value="1" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Release</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-gen="2" data-field="release" value="3" min="0" max="10" />
+                </div>
+            </div>
+        </section>
+        <section class="filter">
+            <header>
+                <h2>Filter</h2>
+            </header>
+            <div class="control-group">
+                <label>Type</label>
+                <div class="controls">
+                    <select data-field="type">
+                        <option value="0">Low Pass</option>
+                        <option value="1">Hi Pass</option>
+                        <option value="2">Bandpass</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Frequency</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-field="frequency" min="10" max="22000" value="350" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Q</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-field="Q" min="1" max="1000" value="1" />
+                </div>
+            </div>
+        </section>
+        <section class="master">
+            <header>
+                <h2>Master</h2>
+            </header>
+            <div class="control-group">
+                <label>Gain</label>
+                <div class="controls">
+                    <input type="range" step="0.1" data-field="gain" min="0" max="1" value="0.25" />
+                </div>
+            </div>
+        </section>
     </div>
 </body>
 </html>
