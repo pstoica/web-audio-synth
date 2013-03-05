@@ -39,7 +39,7 @@ All voices are attached to a filter, a master gain node, and then the device out
 Low pass filters allow only frequencies below the cutoff to go through. High pass filters only permit higher frequencies. Bandpass filters arc, allowing only a range determined by the center frequency and the Q factor.
 
 ## Master Gain
-Lastly is the master gain node. This is just a final step before reaching your speakers so you can change the overall volume!
+Last is the master gain node. This is just a final step before reaching your speakers so you can change the overall volume!
 
 ## References
 * (SynthJS)[https://github.com/mattdiamond/synthjs]: inspiration for envelopes
