@@ -1,14 +1,14 @@
 @charset "utf-8";
 
-@import url(http://fonts.googleapis.com/css?family=Lato:700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed);
 @import "normalize";
 @import "compass/css3/transition";
 @import "compass/css3";
 @import "compass/utilities/general/clearfix";
 
 $black:  #040404;
-//$grey:   mix(#e2e4ee, #fff, 80%);
-$grey:   #d5d5e0;
+$grey:   mix(#e2e4ee, #fff, 80%);
+//$grey:   #d5d5e0;
 $blue:   #4ba8ee;
 $green:  #59cf52;
 $white:  #e3e6f2;
@@ -33,7 +33,7 @@ $key-margin: 1px;
 }
 
 body {
-  font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Roboto Condensed', 'Helvetica', 'Arial', sans-serif;
   background-color: $black;
   color: $white;
 }
@@ -191,7 +191,7 @@ body {
 
 #controls-container {
   width: 952px;
-  margin: 0 auto;
+  margin: 50px auto 0;
 
   section {
     width: 50%;
@@ -224,15 +224,15 @@ input[type="range"]::-webkit-slider-thumb {
   height: 15px;
 }
 
-input[type="range"][data-field="decay"]::-webkit-slider-thumb,
+input[type="range"][data-field="dec"]::-webkit-slider-thumb,
 input[type="range"][data-field="q"]::-webkit-slider-thumb {
   background-color: $green;
 }
 
-input[type="range"][data-field="sustain"]::-webkit-slider-thumb {
+input[type="range"][data-field="sus"]::-webkit-slider-thumb {
   background-color: $orange;
 }
 
-input[type="range"][data-field="release"]::-webkit-slider-thumb {
+input[type="range"][data-field="rel"]::-webkit-slider-thumb {
   background-color: $black;
 }

@@ -126,7 +126,7 @@
         var self = this;
 
         if (self.ring) {
-            return new RingGen();
+            return new RingGen(frequency);
         } else if (self.type >= 0 && self.type <= 3) {
             var oscillator = context.createOscillator();
             
@@ -135,7 +135,7 @@
             oscillator.noteOn(0);
             return oscillator;
         } else if (self.type == NOISE) {
-            return new NoiseGen();
+            return new NoiseGen(frequency);
         }
     };
 
@@ -218,7 +218,6 @@
         };
 
         filter      = context.createBiquadFilter();
-        filter.on   = true;
         filter.type = 2;
 
         filter.frequency.value = frequency;
@@ -232,23 +231,18 @@
     function RingGen(frequency) {
         var self = this,
             bufferSize = 1024,
-            x = 0; // initial sample number
+            x = 0, // initial sample number
+            node = context.createJavaScriptNode(bufferSize, 1, 1);
 
-        this.process = function(e) {
+        node.onaudioprocess = function(e) {
             var out = e.outputBuffer.getChannelData(0);
 
-            for (var i = 0; i < bufferSize; i++) {
-                var f = this.x / (context.sample_rate / 2 * Math.PI * frequency);
-                out[i] = triangle(f) * square(f);
+            for (var i = 0; i < bufferSize; ++i) {
+                var value = square(x * Math.PI * 2.0) + triangle(x * Math.PI * 2.0);
+                x += frequency / context.sampleRate;
+                out[i] = value;
             }
-
-            this.x++;
         }
-
-        var node = context.createJavaScriptNode(bufferSize, 1, 1);
-        node.onaudioprocess = function(e) {
-            self.process(e);
-        };
 
         return node;
     }
@@ -284,18 +278,23 @@
 
         $('.gen input[type="range"]').on('change', function() {
             var $e = $(this);
-            generators[$e.data('gen')][$e.data('field')] = this.value;
+            generators[$e.data('gen')][$e.data('field')] = parseFloat(this.value);
             regenerate();
         });
 
         $('.filter input[type="range"]').on('change', function() {
             var $e = $(this);
-            filter[$e.data('field')].value = this.value;
+            filter[$e.data('field')].value = parseFloat(this.value);
+        });
+
+        $('.filter select').on('change', function() {
+            var $e = $(this);
+            filter.type = $e.val();
         });
 
         $('.master input[type="range"]').on('change', function() {
             var $e = $(this);
-            master[$e.data('field')].value = this.value;
+            master[$e.data('field')].value = parseFloat(this.value);
         });
     });
-}(Zepto));
+}(jQuery));
