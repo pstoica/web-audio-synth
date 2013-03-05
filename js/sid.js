@@ -238,7 +238,7 @@
             var out = e.outputBuffer.getChannelData(0);
 
             for (var i = 0; i < bufferSize; ++i) {
-                var value = square(x * Math.PI * 2.0) + triangle(x * Math.PI * 2.0);
+                var value = square(x * Math.PI * 2.0) * triangle(x * Math.PI * 2.0);
                 x += frequency / context.sampleRate;
                 out[i] = value;
             }
