@@ -21,7 +21,7 @@ Polyphony typically ends up adding a lot of voices without any sort of compressi
 Web audio's built-in oscillators were used for square, sawtooth, and triangle waves. Using one simply involves setting a frequency (generated from a MIDI note number), setting `noteOn`, and connecting it to some output.
 
 ### Noise
-Noise is created using a `javascriptNode` which allows you to directly manipulate the output buffer. For this oscillator, the buffer was simply filled with random values between -1 and 1. To create a sonar effect, the noise is connected to bandpass filter using the specified frequency and a high Q value.
+Noise is created using a `javascriptNode` which allows you to directly manipulate the output buffer. For this oscillator, the buffer was simply filled with random values between -1 and 1. To create a sonar effect, the noise is connected to a bandpass filter using the specified frequency and a high Q value.
 
 ### Ring Modulation
 Ring modulation involves multiplying two signals together. The requirement was to combine a square and triangle wave. I created functions to generate the appropriate values of the waves. The position of the waves is dependent on the sample rate, so the sample number `x` is incremented by `frequency / context.sampleRate` every iteration. This way, all we have to do to combine the waves is:
