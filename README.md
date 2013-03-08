@@ -42,6 +42,6 @@ Low pass filters allow only frequencies below the cutoff to go through. High pas
 Last is the master gain node. This is just a final step before reaching your speakers so you can change the overall volume!
 
 ## References
-* (SynthJS)[https://github.com/mattdiamond/synthjs]: inspiration for envelopes
-* (Generating Tones Using Web Audio)[http://0xfe.blogspot.com/2011/08/generating-tones-with-web-audio-api.html]: information on using JavascriptNode
-* (Teenage Engineering OP-1)[http://www.teenageengineering.com/products/op-1]: UI inspiration. I was going to emulate the knobs and screen, but I got lazy. Maybe another time.
+* [SynthJS][https://github.com/mattdiamond/synthjs]: inspiration for envelopes
+* [Generating Tones Using Web Audio](http://0xfe.blogspot.com/2011/08/generating-tones-with-web-audio-api.html): information on using JavascriptNode
+* [Teenage Engineering OP-1](http://www.teenageengineering.com/products/op-1): UI inspiration. I was going to emulate the knobs and screen, but I got lazy. Maybe another time.
