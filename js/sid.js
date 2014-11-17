@@ -1,8 +1,8 @@
 (function ($) {
    "use strict";
-
-    var context     = new webkitAudioContext(),
-        master      = context.createGainNode(),
+   
+    var context     = new AudioContext(), //
+        master      = context.createGain(), //
         genCount    = 3,
         maxVoices   = 16,
         filter      = context.createBiquadFilter(),
@@ -68,7 +68,7 @@
     function EnvelopeNode(a, d, s, r) {
         var self = this;
 
-        self.gainNode = context.createGainNode();
+        self.gainNode = context.createGain(); //
         self.gainNode.gain.value = 0;
         self.att = a;
         self.dec = d;
@@ -132,7 +132,7 @@
             
             oscillator.type            = self.type;
             oscillator.frequency.value = frequency;
-            oscillator.noteOn(0);
+            oscillator.start(0);
             return oscillator;
         } else if (self.type == NOISE) {
             return new NoiseGen(frequency);
